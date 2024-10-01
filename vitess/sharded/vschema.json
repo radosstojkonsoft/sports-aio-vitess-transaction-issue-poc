@@ -1,0 +1,83 @@
+{
+    "sharded": true,
+    "vindexes": {
+      "binary": {
+        "type": "binary_md5"
+      },
+      "betslip_rm_betslip_id_keyspace_idx": {
+        "type": "lookup_unique",
+        "params": {
+          "table": "unsharded.betslip_rm_betslip_id_keyspace_idx",
+          "from": "rm_betslip_id",
+          "to": "keyspace_id"
+        },
+        "owner": "betslip"
+      },
+      "betslip_provider_betslip_id_keyspace_idx": {
+        "type": "lookup_unique",
+        "params": {
+          "table": "unsharded.betslip_provider_betslip_id_keyspace_idx",
+          "from": "provider_betslip_id",
+          "to": "keyspace_id"
+        },
+        "owner": "betslip"
+      },
+      "bet_id_keyspace_idx": {
+        "type": "lookup_unique",
+        "params": {
+          "table": "unsharded.bet_id_keyspace_idx",
+          "from": "id",
+          "to": "keyspace_id"
+        },
+        "owner": "bet"
+      },
+      "bet_rm_bet_id_keyspace_idx": {
+        "type": "lookup_unique",
+        "params": {
+          "table": "unsharded.bet_rm_bet_id_keyspace_idx",
+          "from": "rm_bet_id",
+          "to": "keyspace_id"
+        },
+        "owner": "bet"
+      },
+      "bet_provider_bet_id_keyspace_idx": {
+        "type": "lookup_unique",
+        "params": {
+          "table": "unsharded.bet_provider_bet_id_keyspace_idx",
+          "from": "provider_bet_id",
+          "to": "keyspace_id"
+        },
+        "owner": "bet"
+      }
+    },
+    "tables": {
+      "betslip": {
+        "column_vindexes": [
+          {
+            "column": "id",
+            "name": "binary"
+          },
+          {
+            "column": "provider_betslip_id",
+            "name": "betslip_provider_betslip_id_keyspace_idx"
+          }
+        ]
+      },
+      "bet": {
+        "column_vindexes": [
+          {
+            "column": "betslip_id",
+            "name": "binary"
+          },
+          {
+            "column": "id",
+            "name": "bet_id_keyspace_idx"
+          },
+          {
+            "column": "provider_bet_id",
+            "name": "bet_provider_bet_id_keyspace_idx"
+          }
+        ]
+      }
+    }
+  }

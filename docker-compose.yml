@@ -1,0 +1,55 @@
+version: "3.2"
+services:
+
+  vitess-db:
+    image: vitess/vttestserver:mysql80
+    container_name: vitess-db
+    command:
+      - "/vt/bin/vttestserver"
+      - "--port=33574"
+      - "--mysql_bind_host=0.0.0.0"
+      - "--vschema_ddl_authorized_users=%"
+      - "--keyspaces=unsharded,sharded"
+      - "--num_shards=1,2"
+      - "--foreign_key_mode=disallow"
+      - "--schema_dir=/scheme"
+      - "--enable_online_ddl=true"
+      - "--alsologtostderr"
+    ports:
+      - 33577:33577
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -P 33577
+      timeout: 20s
+      retries: 3
+    volumes:
+      - ./vitess:/scheme
+    networks:
+      - db_network
+    
+  # test_app:
+  #   container_name: test_app
+  #   # restart: unless-stopped
+  #   build:
+  #     context: "."
+  #   env_file: 
+  #     - ./.env
+  #   environment:
+  #     - UNSHARDED_DB=unsharded
+  #     - SHARDED_DB=sharded
+  #     - APP_VERSION=v1.0.0
+
+  #   networks:
+  #     - db_network
+  #   depends_on:
+  #       vitess-db:
+  #         condition: service_healthy
+  #   command: npm run test_app
+
+networks:
+
+  db_network:
+    driver: bridge
+
+volumes:
+  db:
+    driver: local

@@ -1,0 +1,18 @@
+{
+    "sharded": false,
+    "tables": {
+        "betslip_provider_betslip_id_keyspace_idx": {},
+        "bet_id_keyspace_idx": {},
+        "bet_provider_bet_id_keyspace_idx": {},
+        "tenant": {
+            "type": "reference"
+        },
+        "provider": {
+            "type": "reference"
+        },
+        "tenant_provider": {
+            "type": "reference"
+        }
+    }
+
+}
