@@ -13,8 +13,11 @@ export class DBAdapter {
     await conn.beginTransaction();
 
     try {
+      console.log("Work started ", conn.threadId);
       const res = await work(conn);
+      console.log("Work done ", conn.threadId);
       await conn.commit();
+      console.log("Committed ", conn.threadId);
       return res;
     } catch (e: unknown) {
       console.log(e);
@@ -23,6 +26,7 @@ export class DBAdapter {
       throw e;
     } finally {
       conn.release();
+      console.log("Release conn ", conn.threadId)
     }
   }
   static async startTransactionUseConnection<T>(
@@ -207,7 +211,6 @@ export class DBAdapter {
       return await work(connection);
     }
     console.log("Running independent transaction");
-
     return await DBAdapter.startTransaction(undefined, this.pool, work);
   }
 }

@@ -55,7 +55,8 @@ import { DBAdapter } from '../adapter/db_adapter.js';
 
         await adapter.loadTenantProviderByName(
           'DEMO_PROVIDER_1',
-          'DEMO_TENANT_1'
+          'DEMO_TENANT_1',
+          conn
         );
       });
     } catch (error) {
